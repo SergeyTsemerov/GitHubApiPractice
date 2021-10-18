@@ -1,8 +1,7 @@
 package ru.geekbrains.librariescoursepractice
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import ru.geekbrains.librariescoursepractice.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(), MainView {

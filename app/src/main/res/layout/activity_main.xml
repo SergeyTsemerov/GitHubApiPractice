@@ -8,7 +8,7 @@
     android:padding="16dp">
 
     <TextView
-        android:id="@+id/tv1"
+        android:id="@+id/firstCounterTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/counter_one"/>
@@ -17,11 +17,11 @@
         android:id="@+id/btn_counter1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/tv1"
+        app:layout_constraintTop_toBottomOf="@id/firstCounterTextView"
         android:text="@string/zero" />
 
     <TextView
-        android:id="@+id/tv2"
+        android:id="@+id/secondCounterTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/btn_counter1"
@@ -31,11 +31,11 @@
         android:id="@+id/btn_counter2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/tv2"
+        app:layout_constraintTop_toBottomOf="@id/secondCounterTextView"
         android:text="@string/zero" />
 
     <TextView
-        android:id="@+id/tv3"
+        android:id="@+id/thirdCounterTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/btn_counter2"
@@ -45,7 +45,7 @@
         android:id="@+id/btn_counter3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/tv3"
+        app:layout_constraintTop_toBottomOf="@id/thirdCounterTextView"
         android:text="@string/zero" />
 
 </LinearLayout>
