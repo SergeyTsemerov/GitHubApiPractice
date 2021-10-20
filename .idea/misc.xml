@@ -4,6 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/GeekBrains/Android/LibrariesCoursePractice/app/src/main/res/layout/activity_main.xml" value="0.24003623188405798" />
+        <entry key="..\:/GeekBrains/Android/LibrariesCoursePractice/app/src/main/res/layout/fragment_login.xml" value="0.22644927536231885" />
+        <entry key="..\:/GeekBrains/Android/LibrariesCoursePractice/app/src/main/res/layout/fragment_user.xml" value="0.23097826086956522" />
+        <entry key="..\:/GeekBrains/Android/LibrariesCoursePractice/app/src/main/res/layout/fragment_users.xml" value="0.22644927536231885" />
+        <entry key="..\:/GeekBrains/Android/LibrariesCoursePractice/app/src/main/res/layout/item_user.xml" value="0.23097826086956522" />
       </map>
     </option>
   </component>
