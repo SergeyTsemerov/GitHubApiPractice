@@ -7,7 +7,7 @@ import ru.geekbrains.librariescoursepractice.view.IScreens
 import ru.geekbrains.librariescoursepractice.view.IUserItemView
 
 class UsersPresenter(
-    val usersRepo: GithubUsersRepo,
+    private val usersRepo: GithubUsersRepo,
     private val router: Router,
     private val screen: IScreens
 ) :
@@ -35,8 +35,8 @@ class UsersPresenter(
     }
 
     private fun loadData() {
-        val users = usersRepo.getUsers()
-        usersListPresenter.users.addAll(users)
+        usersRepo.getUsers()
+            .subscribe { usersListPresenter.users.addAll(it) }
         viewState.updateList()
     }
 
