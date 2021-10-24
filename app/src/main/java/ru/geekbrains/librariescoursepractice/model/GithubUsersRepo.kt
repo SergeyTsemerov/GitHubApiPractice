@@ -1,12 +1,13 @@
 package ru.geekbrains.librariescoursepractice.model
 
+import io.reactivex.rxjava3.core.Observable
 import ru.geekbrains.librariescoursepractice.presenter.GithubUser
 
 class GithubUsersRepo {
 
-    val repositories = (0..100).map { GithubUser("login $it") }
+    private val repositories = (0..10).map { GithubUser("login $it") }
 
-    fun getUsers(): List<GithubUser> {
-        return repositories
+    fun getUsers(): Observable<List<GithubUser>> {
+        return Observable.just(repositories)
     }
 }
