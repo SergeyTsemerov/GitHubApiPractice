@@ -10,6 +10,6 @@ class AndroidScreens : IScreens {
     }
 
     override fun login(user: GithubUser): Screen {
-        return FragmentScreen { LoginFragment.newInstance(user) }
+        return FragmentScreen { RepositoriesFragment.newInstance(user) }
     }
 }

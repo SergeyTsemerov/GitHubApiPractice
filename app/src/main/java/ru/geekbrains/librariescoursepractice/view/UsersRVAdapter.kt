@@ -2,11 +2,15 @@ package ru.geekbrains.librariescoursepractice.view
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import ru.geekbrains.librariescoursepractice.presenter.IUserListPresenter
 import ru.geekbrains.librariescoursepractice.databinding.ItemUserBinding
 
-class UsersRVAdapter(private val presenter: IUserListPresenter) :
+class UsersRVAdapter(
+    private val presenter: IUserListPresenter,
+    val imageLoader: IImageLoader<ImageView>
+) :
     RecyclerView.Adapter<UsersRVAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         ViewHolder(
@@ -34,5 +38,8 @@ class UsersRVAdapter(private val presenter: IUserListPresenter) :
             textViewLogin.text = text
         }
 
+        override fun loadAvatar(url: String) = with(binding) {
+            imageLoader.loadInto(url, binding.imageViewAvatar)
+        }
     }
 }

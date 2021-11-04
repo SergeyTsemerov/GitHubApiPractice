@@ -5,11 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import ru.geekbrains.librariescoursepractice.*
 import ru.geekbrains.librariescoursepractice.databinding.FragmentUsersBinding
-import ru.geekbrains.librariescoursepractice.model.GithubUsersRepo
+import ru.geekbrains.librariescoursepractice.model.ApiHolder
+import ru.geekbrains.librariescoursepractice.model.RetrofitGithubUsersRepo
 import ru.geekbrains.librariescoursepractice.presenter.UsersPresenter
 import ru.geekbrains.librariescoursepractice.presenter.UsersView
 
@@ -23,7 +26,12 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     private val binding get() = _binding!!
 
     private val presenter: UsersPresenter by moxyPresenter {
-        UsersPresenter(GithubUsersRepo(), App.instance.router, AndroidScreens())
+        UsersPresenter(
+            AndroidSchedulers.mainThread(),
+            RetrofitGithubUsersRepo(ApiHolder.api),
+            App.instance.router,
+            AndroidScreens()
+        )
     }
     var adapter: UsersRVAdapter? = null
 
@@ -44,8 +52,15 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     override fun init() {
         binding.run {
             this.recyclerViewUsers.layoutManager = LinearLayoutManager(context)
-            adapter = UsersRVAdapter(presenter.usersListPresenter)
+            adapter = UsersRVAdapter(presenter.usersListPresenter, GlideImageLoader())
             this.recyclerViewUsers.adapter = adapter
+        }
+
+        binding.topImage.run {
+            Glide.with(this)
+                .load("https://www.influxdata.com/wp-content/uploads/GitHub-logo.jpg")
+                .placeholder(R.drawable.image_error)
+                .into(this)
         }
     }
 

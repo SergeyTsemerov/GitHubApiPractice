@@ -5,4 +5,11 @@
     <dimen name="recycler_view_padding_top">16dp</dimen>
     <dimen name="recycler_view_padding_bottom">16dp</dimen>
     <dimen name="login_text_size">30sp</dimen>
+    <dimen name="recycler_layout_width">0dp</dimen>
+    <dimen name="recycler_layout_height">0dp</dimen>
+    <dimen name="recycler_view_margin_top">16dp</dimen>
+    <dimen name="image_view_margin_top">16dp</dimen>
+    <dimen name="avatar_layout_width">50dp</dimen>
+    <dimen name="avatar_layout_height">50dp</dimen>
+    <dimen name="avatar_layout_margin">16dp</dimen>
 </resources>
