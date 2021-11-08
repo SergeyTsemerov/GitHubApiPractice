@@ -38,7 +38,7 @@ class UsersRVAdapter(
             textViewLogin.text = text
         }
 
-        override fun loadAvatar(url: String) = with(binding) {
+        override fun loadAvatar(url: String) {
             imageLoader.loadInto(url, binding.imageViewAvatar)
         }
     }

@@ -1,10 +1,11 @@
-package ru.geekbrains.librariescoursepractice.view
+package ru.geekbrains.librariescoursepractice.presenter
 
 import moxy.MvpView
 import moxy.viewstate.strategy.AddToEndSingleStrategy
 import moxy.viewstate.strategy.StateStrategyType
 
 @StateStrategyType(AddToEndSingleStrategy::class)
-interface ReposView : MvpView {
-    fun setLogin(login: String)
+interface RepositoriesView : MvpView {
+    fun init()
+    fun updateList()
 }

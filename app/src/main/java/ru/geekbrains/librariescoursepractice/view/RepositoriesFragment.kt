@@ -9,21 +9,22 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import ru.geekbrains.librariescoursepractice.App
-import ru.geekbrains.librariescoursepractice.databinding.FragmentLoginBinding
+import ru.geekbrains.librariescoursepractice.databinding.FragmentRepositoriesBinding
 import ru.geekbrains.librariescoursepractice.model.ApiHolder
 import ru.geekbrains.librariescoursepractice.model.IGitHubUsersRepo
 import ru.geekbrains.librariescoursepractice.model.RetrofitGithubUsersRepo
-import ru.geekbrains.librariescoursepractice.presenter.GithubUser
+import ru.geekbrains.librariescoursepractice.presenter.RepositoriesPresenter
+import ru.geekbrains.librariescoursepractice.presenter.RepositoriesView
 import ru.geekbrains.librariescoursepractice.presenter.UsersPresenter
 
-class RepositoriesFragment : MvpAppCompatFragment(), BackButtonListener, ReposView {
+class RepositoriesFragment : MvpAppCompatFragment(), BackButtonListener, RepositoriesView {
 
-    private var _binding: FragmentLoginBinding? = null
+    private var _binding: FragmentRepositoriesBinding? = null
     private val binding get() = _binding!!
 
-    private val presenter: UsersPresenter by moxyPresenter {
-        UsersPresenter(
-            AndroidSchedulers.mainThread(),
+    private val presenter: RepositoriesPresenter by moxyPresenter {
+        RepositoriesPresenter(
+            (arguments?.getString(REPOS)),
             RetrofitGithubUsersRepo(ApiHolder.api),
             App.instance.router,
             AndroidScreens()
@@ -37,7 +38,7 @@ class RepositoriesFragment : MvpAppCompatFragment(), BackButtonListener, ReposVi
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentLoginBinding.inflate(inflater, container, false)
+        _binding = FragmentRepositoriesBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -46,22 +47,10 @@ class RepositoriesFragment : MvpAppCompatFragment(), BackButtonListener, ReposVi
         _binding = null
     }
 
-    override fun setLogin(login: String) {
-        val usersRepo: IGitHubUsersRepo = RetrofitGithubUsersRepo(ApiHolder.api)
-        usersRepo.getRepositories(login).observeOn(AndroidSchedulers.mainThread())
-            .subscribe { repos ->
-                binding.recyclerViewUsers.layoutManager =
-                    LinearLayoutManager(context)
-                adapter = RepositoriesRVAdapter(repos)
-                binding.recyclerViewUsers.adapter = adapter
-            }
-    }
-
     companion object {
-        private const val LOGIN = "login"
-        fun newInstance(user: GithubUser): MvpAppCompatFragment {
-            val bundle = Bundle()
-            bundle.putString(LOGIN, user.login)
+        private const val REPOS = "repos"
+        fun newInstance(repo: String?): RepositoriesFragment {
+            val bundle = Bundle().apply { putString(REPOS, repo) }
             return RepositoriesFragment().apply {
                 arguments = bundle
             }
@@ -69,4 +58,16 @@ class RepositoriesFragment : MvpAppCompatFragment(), BackButtonListener, ReposVi
     }
 
     override fun backPressed() = presenter.backPressed()
+
+    override fun init() {
+        binding.run {
+            this.recyclerViewRepositories.layoutManager = LinearLayoutManager(context)
+            adapter = RepositoriesRVAdapter(presenter.repositoriesListPresenter)
+            this.recyclerViewRepositories.adapter = adapter
+        }
+    }
+
+    override fun updateList() {
+        adapter?.notifyDataSetChanged()
+    }
 }

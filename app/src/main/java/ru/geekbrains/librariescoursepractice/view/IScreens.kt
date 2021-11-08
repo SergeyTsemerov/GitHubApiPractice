@@ -1,10 +1,10 @@
 package ru.geekbrains.librariescoursepractice.view
 
 import com.github.terrakok.cicerone.Screen
-import ru.geekbrains.librariescoursepractice.presenter.GithubUser
+import ru.geekbrains.librariescoursepractice.model.GithubUser
 
 interface IScreens {
     fun users(): Screen
-    fun login(user: GithubUser): Screen
+    fun repositories(login: String?): Screen
 }
 

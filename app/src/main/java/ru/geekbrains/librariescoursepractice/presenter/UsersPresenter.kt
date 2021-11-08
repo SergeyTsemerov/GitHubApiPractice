@@ -3,16 +3,16 @@ package ru.geekbrains.librariescoursepractice.presenter
 import com.github.terrakok.cicerone.Router
 import io.reactivex.rxjava3.core.Scheduler
 import moxy.MvpPresenter
+import ru.geekbrains.librariescoursepractice.model.GithubUser
 import ru.geekbrains.librariescoursepractice.model.IGitHubUsersRepo
-import ru.geekbrains.librariescoursepractice.model.RetrofitGithubUsersRepo
 import ru.geekbrains.librariescoursepractice.view.IScreens
 import ru.geekbrains.librariescoursepractice.view.IUserItemView
 
 class UsersPresenter(
-    val uiScheduler: Scheduler,
-    val usersRepo: IGitHubUsersRepo,
-    val router: Router,
-    val screen: IScreens
+    private val uiScheduler: Scheduler,
+    private val usersRepo: IGitHubUsersRepo,
+    private val router: Router,
+    private val screen: IScreens
 ) :
     MvpPresenter<UsersView>() {
     class UsersListPresenter : IUserListPresenter {
@@ -36,8 +36,8 @@ class UsersPresenter(
         loadData()
 
         usersListPresenter.itemClickListener = { itemView ->
-            val user = usersListPresenter.users[itemView.pos]
-            router.navigateTo(screen.login(user))
+            val user = usersListPresenter.users[itemView.pos].reposUrl
+            router.navigateTo(screen.repositories(user))
         }
     }
 

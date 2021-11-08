@@ -1,4 +1,4 @@
-package ru.geekbrains.librariescoursepractice.presenter
+package ru.geekbrains.librariescoursepractice.model
 
 import android.os.Parcelable
 import com.google.gson.annotations.Expose
