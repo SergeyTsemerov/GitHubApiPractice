@@ -36,7 +36,7 @@ class UsersPresenter(
         loadData()
 
         usersListPresenter.itemClickListener = { itemView ->
-            val user = usersListPresenter.users[itemView.pos].reposUrl
+            val user = usersListPresenter.users[itemView.pos].login
             router.navigateTo(screen.repositories(user))
         }
     }

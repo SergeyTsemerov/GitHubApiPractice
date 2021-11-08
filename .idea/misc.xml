@@ -3,10 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/GeekBrains/Android/LibrariesCoursePractice/app/src/main/res/drawable/ic_baseline_broken_image_24.xml" value="0.26614583333333336" />
+        <entry key="..\:/GeekBrains/Android/LibrariesCoursePractice/app/src/main/res/drawable/ic_baseline_image_not_supported_24.xml" value="0.26614583333333336" />
+        <entry key="..\:/GeekBrains/Android/LibrariesCoursePractice/app/src/main/res/drawable/image_error.xml" value="0.26614583333333336" />
         <entry key="..\:/GeekBrains/Android/LibrariesCoursePractice/app/src/main/res/layout/activity_main.xml" value="0.24003623188405798" />
         <entry key="..\:/GeekBrains/Android/LibrariesCoursePractice/app/src/main/res/layout/fragment_login.xml" value="0.22644927536231885" />
+        <entry key="..\:/GeekBrains/Android/LibrariesCoursePractice/app/src/main/res/layout/fragment_repositories.xml" value="0.20833333333333334" />
         <entry key="..\:/GeekBrains/Android/LibrariesCoursePractice/app/src/main/res/layout/fragment_user.xml" value="0.23097826086956522" />
         <entry key="..\:/GeekBrains/Android/LibrariesCoursePractice/app/src/main/res/layout/fragment_users.xml" value="0.22644927536231885" />
+        <entry key="..\:/GeekBrains/Android/LibrariesCoursePractice/app/src/main/res/layout/item_repo.xml" value="0.213768115942029" />
         <entry key="..\:/GeekBrains/Android/LibrariesCoursePractice/app/src/main/res/layout/item_user.xml" value="0.23097826086956522" />
       </map>
     </option>
