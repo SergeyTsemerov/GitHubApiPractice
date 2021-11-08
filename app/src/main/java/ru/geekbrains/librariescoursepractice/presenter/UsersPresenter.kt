@@ -18,7 +18,7 @@ class UsersPresenter(
     MvpPresenter<UsersView>() {
     class UsersListPresenter : IUserListPresenter {
 
-        val users = mutableListOf<GithubUser>()
+        val users = (1..20).map { GithubUser("login $it") }.toMutableList()
 
         override var itemClickListener: ((IUserItemView) -> Unit)? = null
         override fun getCount() = users.size

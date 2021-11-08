@@ -4,14 +4,14 @@ import com.github.terrakok.cicerone.Router
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import moxy.MvpPresenter
 import ru.geekbrains.librariescoursepractice.model.GithubRepository
-import ru.geekbrains.librariescoursepractice.model.IGitHubUsersRepo
+import ru.geekbrains.librariescoursepractice.model.IGitHubRepositoriesRepo
 import ru.geekbrains.librariescoursepractice.view.IRepoItemView
 import ru.geekbrains.librariescoursepractice.view.IScreens
 import ru.geekbrains.librariescoursepractice.view.RepositoriesView
 
 class RepositoriesPresenter(
     private val reposUrl: String?,
-    private val repository: IGitHubUsersRepo,
+    private val repository: IGitHubRepositoriesRepo,
     private val router: Router,
     private val screen: IScreens
 ) : MvpPresenter<RepositoriesView>() {
