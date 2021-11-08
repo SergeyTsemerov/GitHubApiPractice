@@ -1,15 +1,18 @@
 package ru.geekbrains.librariescoursepractice.presenter
 
 import com.github.terrakok.cicerone.Router
+import io.reactivex.rxjava3.core.Scheduler
 import moxy.MvpPresenter
-import ru.geekbrains.librariescoursepractice.model.GithubUsersRepo
+import ru.geekbrains.librariescoursepractice.model.IGitHubUsersRepo
+import ru.geekbrains.librariescoursepractice.model.RetrofitGithubUsersRepo
 import ru.geekbrains.librariescoursepractice.view.IScreens
 import ru.geekbrains.librariescoursepractice.view.IUserItemView
 
 class UsersPresenter(
-    private val usersRepo: GithubUsersRepo,
-    private val router: Router,
-    private val screen: IScreens
+    val uiScheduler: Scheduler,
+    val usersRepo: IGitHubUsersRepo,
+    val router: Router,
+    val screen: IScreens
 ) :
     MvpPresenter<UsersView>() {
     class UsersListPresenter : IUserListPresenter {
@@ -20,24 +23,34 @@ class UsersPresenter(
         override fun getCount() = users.size
         override fun bindView(view: IUserItemView) {
             val user = users[view.pos]
-            view.setLogin(user.login)
+            user.login?.let { view.setLogin(it) }
+            user.avatarUrl?.let { view.loadAvatar(it) }
         }
     }
 
     val usersListPresenter = UsersListPresenter()
+
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
         viewState.init()
         loadData()
-        usersListPresenter.itemClickListener = {
-            router.navigateTo(screen.login(usersListPresenter.users[it.pos]))
+
+        usersListPresenter.itemClickListener = { itemView ->
+            val user = usersListPresenter.users[itemView.pos]
+            router.navigateTo(screen.login(user))
         }
     }
 
     private fun loadData() {
         usersRepo.getUsers()
-            .subscribe { usersListPresenter.users.addAll(it) }
-        viewState.updateList()
+            .observeOn(uiScheduler)
+            .subscribe({ repos ->
+                usersListPresenter.users.clear()
+                usersListPresenter.users.addAll(repos)
+                viewState.updateList()
+            }, {
+                println("Error: ${it.message}")
+            })
     }
 
     fun backPressed(): Boolean {
