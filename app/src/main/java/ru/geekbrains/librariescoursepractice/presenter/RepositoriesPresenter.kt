@@ -7,6 +7,7 @@ import ru.geekbrains.librariescoursepractice.model.GithubRepository
 import ru.geekbrains.librariescoursepractice.model.IGitHubUsersRepo
 import ru.geekbrains.librariescoursepractice.view.IRepoItemView
 import ru.geekbrains.librariescoursepractice.view.IScreens
+import ru.geekbrains.librariescoursepractice.view.RepositoriesView
 
 class RepositoriesPresenter(
     private val reposUrl: String?,

@@ -7,6 +7,7 @@ import ru.geekbrains.librariescoursepractice.model.GithubUser
 import ru.geekbrains.librariescoursepractice.model.IGitHubUsersRepo
 import ru.geekbrains.librariescoursepractice.view.IScreens
 import ru.geekbrains.librariescoursepractice.view.IUserItemView
+import ru.geekbrains.librariescoursepractice.view.UsersView
 
 class UsersPresenter(
     private val uiScheduler: Scheduler,

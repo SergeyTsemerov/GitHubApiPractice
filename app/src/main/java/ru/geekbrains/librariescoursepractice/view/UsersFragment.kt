@@ -14,7 +14,6 @@ import ru.geekbrains.librariescoursepractice.databinding.FragmentUsersBinding
 import ru.geekbrains.librariescoursepractice.model.ApiHolder
 import ru.geekbrains.librariescoursepractice.model.RetrofitGithubUsersRepo
 import ru.geekbrains.librariescoursepractice.presenter.UsersPresenter
-import ru.geekbrains.librariescoursepractice.presenter.UsersView
 
 class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
 
