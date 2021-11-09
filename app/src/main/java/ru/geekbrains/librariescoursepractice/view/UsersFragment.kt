@@ -9,7 +9,10 @@ import com.bumptech.glide.Glide
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
-import ru.geekbrains.librariescoursepractice.*
+import ru.geekbrains.librariescoursepractice.App
+import ru.geekbrains.librariescoursepractice.R
+import ru.geekbrains.librariescoursepractice.database.AndroidNetworkStatus
+import ru.geekbrains.librariescoursepractice.database.DataBase
 import ru.geekbrains.librariescoursepractice.databinding.FragmentUsersBinding
 import ru.geekbrains.librariescoursepractice.model.ApiHolder
 import ru.geekbrains.librariescoursepractice.model.RetrofitGithubUsersRepo
@@ -27,7 +30,11 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     private val presenter: UsersPresenter by moxyPresenter {
         UsersPresenter(
             AndroidSchedulers.mainThread(),
-            RetrofitGithubUsersRepo(ApiHolder.api),
+            RetrofitGithubUsersRepo(
+                ApiHolder.api,
+                AndroidNetworkStatus(requireContext()),
+                DataBase.getInstance()
+            ),
             App.instance.router,
             AndroidScreens()
         )
