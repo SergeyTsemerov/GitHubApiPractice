@@ -8,35 +8,37 @@ import ru.geekbrains.librariescoursepractice.database.RoomGithubRepository
 
 class RetrofitGithubRepositoriesRepo(
     private val api: IDataSource,
-    val networkStatus: INetworkStatus,
+    private val networkStatus: INetworkStatus,
     val dataBase: DataBase
 ) : IGitHubRepositoriesRepo {
 
-    override fun getRepositories(login: String?): Single<List<GithubRepository>> =
+    override fun getRepositories(user: GithubUser?): Single<List<GithubRepository>> =
         networkStatus.isOnlineSingle().flatMap { isOnline ->
             if (isOnline) {
-                api.loadRepositories(login)
-                    .flatMap { repositories ->
-                        Single.fromCallable {
-                            val roomUser = GithubUser().login?.let {
-                                dataBase.userDao.findByLogin(it)
-                            } ?: throw  RuntimeException("No such user in cache")
-                            val roomRepos = repositories.map {
-                                RoomGithubRepository(
-                                    it.id ?: "",
-                                    it.name ?: "",
-                                    it.forks ?: 0,
-                                    roomUser.id
-                                )
+                user?.reposUrl?.let { url ->
+                    api.loadRepositories(url)
+                        .flatMap { repositories ->
+                            Single.fromCallable {
+                                val roomUser = user.login?.let {
+                                    dataBase.userDao.findByLogin(it)
+                                } ?: throw  RuntimeException("No such user in cache")
+                                val roomRepos = repositories.map {
+                                    RoomGithubRepository(
+                                        it.id,
+                                        it.name ?: "",
+                                        it.forks ?: 0,
+                                        roomUser.id
+                                    )
+                                }
+                                dataBase.repositoryDao.insert(roomRepos)
+                                repositories
                             }
-                            dataBase.repositoryDao.insert(roomRepos)
-                            repositories
                         }
-                    } ?: Single.error<List<GithubRepository>>(RuntimeException("User has no repos"))
+                } ?: Single.error<List<GithubRepository>>(RuntimeException("User has no repos"))
                     .subscribeOn(Schedulers.io())
             } else {
                 Single.fromCallable {
-                    val roomUser = GithubUser().login?.let { dataBase.userDao.findByLogin(it) }
+                    val roomUser = user?.login?.let { dataBase.userDao.findByLogin(it) }
                         ?: throw RuntimeException("No such user in cache")
                     dataBase.repositoryDao.findForUser(roomUser.id).map {
                         GithubRepository(it.id, it.name, it.forksCount)

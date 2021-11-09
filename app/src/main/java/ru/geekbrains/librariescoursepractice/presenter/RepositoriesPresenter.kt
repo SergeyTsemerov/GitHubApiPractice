@@ -4,13 +4,14 @@ import com.github.terrakok.cicerone.Router
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import moxy.MvpPresenter
 import ru.geekbrains.librariescoursepractice.model.GithubRepository
+import ru.geekbrains.librariescoursepractice.model.GithubUser
 import ru.geekbrains.librariescoursepractice.model.IGitHubRepositoriesRepo
 import ru.geekbrains.librariescoursepractice.view.IRepoItemView
 import ru.geekbrains.librariescoursepractice.view.IScreens
 import ru.geekbrains.librariescoursepractice.view.RepositoriesView
 
 class RepositoriesPresenter(
-    private val reposUrl: String?,
+    private val user: GithubUser?,
     private val repository: IGitHubRepositoriesRepo,
     private val router: Router,
     private val screen: IScreens
@@ -36,7 +37,7 @@ class RepositoriesPresenter(
     }
 
     private fun loadData() {
-        repository.getRepositories(reposUrl)
+        repository.getRepositories(user)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ repos ->
                 repositoriesListPresenter.repositories.clear()

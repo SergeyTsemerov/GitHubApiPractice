@@ -12,6 +12,7 @@ import ru.geekbrains.librariescoursepractice.database.AndroidNetworkStatus
 import ru.geekbrains.librariescoursepractice.database.DataBase
 import ru.geekbrains.librariescoursepractice.databinding.FragmentRepositoriesBinding
 import ru.geekbrains.librariescoursepractice.model.ApiHolder
+import ru.geekbrains.librariescoursepractice.model.GithubUser
 import ru.geekbrains.librariescoursepractice.model.RetrofitGithubRepositoriesRepo
 import ru.geekbrains.librariescoursepractice.presenter.RepositoriesPresenter
 
@@ -22,7 +23,7 @@ class RepositoriesFragment : MvpAppCompatFragment(), BackButtonListener, Reposit
 
     private val presenter: RepositoriesPresenter by moxyPresenter {
         RepositoriesPresenter(
-            (arguments?.getString(REPOS)),
+            (arguments?.getParcelable(REPOS)),
             RetrofitGithubRepositoriesRepo(
                 ApiHolder.api,
                 AndroidNetworkStatus(requireContext()),
@@ -51,8 +52,8 @@ class RepositoriesFragment : MvpAppCompatFragment(), BackButtonListener, Reposit
 
     companion object {
         private const val REPOS = "repos"
-        fun newInstance(repo: String?): RepositoriesFragment {
-            val bundle = Bundle().apply { putString(REPOS, repo) }
+        fun newInstance(user: GithubUser?): RepositoriesFragment {
+            val bundle = Bundle().apply { putParcelable(REPOS, user) }
             return RepositoriesFragment().apply {
                 arguments = bundle
             }

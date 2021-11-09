@@ -5,6 +5,6 @@ import ru.geekbrains.librariescoursepractice.model.GithubUser
 
 interface IScreens {
     fun users(): Screen
-    fun repositories(login: String?): Screen
+    fun repositories(user: GithubUser?): Screen
 }
 
