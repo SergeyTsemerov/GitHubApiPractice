@@ -2,14 +2,12 @@ package ru.geekbrains.librariescoursepractice.model
 
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
-import ru.geekbrains.librariescoursepractice.database.DataBase
-import ru.geekbrains.librariescoursepractice.database.INetworkStatus
-import ru.geekbrains.librariescoursepractice.database.RoomGithubRepository
+import ru.geekbrains.librariescoursepractice.database.*
 
 class RetrofitGithubRepositoriesRepo(
     private val api: IDataSource,
     private val networkStatus: INetworkStatus,
-    val dataBase: DataBase
+    val dataBase: IRepositoriesCache
 ) : IGitHubRepositoriesRepo {
 
     override fun getRepositories(user: GithubUser?): Single<List<GithubRepository>> =
@@ -19,18 +17,7 @@ class RetrofitGithubRepositoriesRepo(
                     api.loadRepositories(url)
                         .flatMap { repositories ->
                             Single.fromCallable {
-                                val roomUser = user.login?.let {
-                                    dataBase.userDao.findByLogin(it)
-                                } ?: throw  RuntimeException("No such user in cache")
-                                val roomRepos = repositories.map {
-                                    RoomGithubRepository(
-                                        it.id,
-                                        it.name ?: "",
-                                        it.forks ?: 0,
-                                        roomUser.id
-                                    )
-                                }
-                                dataBase.repositoryDao.insert(roomRepos)
+                                dataBase.saveReposToDB(repositories, user)
                                 repositories
                             }
                         }
@@ -38,11 +25,7 @@ class RetrofitGithubRepositoriesRepo(
                     .subscribeOn(Schedulers.io())
             } else {
                 Single.fromCallable {
-                    val roomUser = user?.login?.let { dataBase.userDao.findByLogin(it) }
-                        ?: throw RuntimeException("No such user in cache")
-                    dataBase.repositoryDao.findForUser(roomUser.id).map {
-                        GithubRepository(it.id, it.name, it.forksCount)
-                    }
+                    dataBase.getReposFromDB(user)
                 }.subscribeOn(Schedulers.io())
             }
         }

@@ -10,6 +10,7 @@ import moxy.ktx.moxyPresenter
 import ru.geekbrains.librariescoursepractice.App
 import ru.geekbrains.librariescoursepractice.database.AndroidNetworkStatus
 import ru.geekbrains.librariescoursepractice.database.DataBase
+import ru.geekbrains.librariescoursepractice.database.RoomRepositoriesCache
 import ru.geekbrains.librariescoursepractice.databinding.FragmentRepositoriesBinding
 import ru.geekbrains.librariescoursepractice.model.ApiHolder
 import ru.geekbrains.librariescoursepractice.model.GithubUser
@@ -27,7 +28,7 @@ class RepositoriesFragment : MvpAppCompatFragment(), BackButtonListener, Reposit
             RetrofitGithubRepositoriesRepo(
                 ApiHolder.api,
                 AndroidNetworkStatus(requireContext()),
-                DataBase.getInstance()
+                RoomRepositoriesCache(DataBase.getInstance())
             ),
             App.instance.router,
             AndroidScreens()

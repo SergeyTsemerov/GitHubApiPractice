@@ -13,6 +13,7 @@ import ru.geekbrains.librariescoursepractice.App
 import ru.geekbrains.librariescoursepractice.R
 import ru.geekbrains.librariescoursepractice.database.AndroidNetworkStatus
 import ru.geekbrains.librariescoursepractice.database.DataBase
+import ru.geekbrains.librariescoursepractice.database.RoomUserCache
 import ru.geekbrains.librariescoursepractice.databinding.FragmentUsersBinding
 import ru.geekbrains.librariescoursepractice.model.ApiHolder
 import ru.geekbrains.librariescoursepractice.model.RetrofitGithubUsersRepo
@@ -33,7 +34,7 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
             RetrofitGithubUsersRepo(
                 ApiHolder.api,
                 AndroidNetworkStatus(requireContext()),
-                DataBase.getInstance()
+                RoomUserCache(DataBase.getInstance())
             ),
             App.instance.router,
             AndroidScreens()

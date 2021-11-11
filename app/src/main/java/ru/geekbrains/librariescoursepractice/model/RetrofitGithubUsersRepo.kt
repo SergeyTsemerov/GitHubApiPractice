@@ -2,14 +2,12 @@ package ru.geekbrains.librariescoursepractice.model
 
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
-import ru.geekbrains.librariescoursepractice.database.DataBase
-import ru.geekbrains.librariescoursepractice.database.INetworkStatus
-import ru.geekbrains.librariescoursepractice.database.RoomGithubUser
+import ru.geekbrains.librariescoursepractice.database.*
 
 class RetrofitGithubUsersRepo(
     private val api: IDataSource,
     private val networkStatus: INetworkStatus,
-    private val dataBase: DataBase
+    private val dataBase: IUserCache
 ) : IGitHubUsersRepo {
 
     override fun getUsers(): Single<List<GithubUser>> =
@@ -18,28 +16,13 @@ class RetrofitGithubUsersRepo(
                 api.loadUsers()
                     .flatMap { users ->
                         Single.fromCallable {
-                            val roomUsers = users.map { user ->
-                                RoomGithubUser(
-                                    user.id ?: "",
-                                    user.login ?: "",
-                                    user.avatarUrl ?: "",
-                                    user.reposUrl ?: ""
-                                )
-                            }
-                            dataBase.userDao.insert(roomUsers)
+                            dataBase.saveUsersToDataBase(users)
                             users
                         }
                     }
             } else {
                 Single.fromCallable {
-                    dataBase.userDao.getAll().map { roomUser ->
-                        GithubUser(
-                            roomUser.login,
-                            roomUser.id,
-                            roomUser.avatarUrl,
-                            roomUser.reposUrl
-                        )
-                    }
+                    dataBase.getUsersFromDataBase()
                 }
             }
         }.subscribeOn(Schedulers.io())
