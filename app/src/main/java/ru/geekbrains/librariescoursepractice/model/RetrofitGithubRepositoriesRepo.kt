@@ -2,7 +2,8 @@ package ru.geekbrains.librariescoursepractice.model
 
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
-import ru.geekbrains.librariescoursepractice.database.*
+import ru.geekbrains.librariescoursepractice.database.INetworkStatus
+import ru.geekbrains.librariescoursepractice.database.IRepositoriesCache
 
 class RetrofitGithubRepositoriesRepo(
     private val api: IDataSource,

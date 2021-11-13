@@ -8,14 +8,19 @@ import ru.geekbrains.librariescoursepractice.model.IGitHubUsersRepo
 import ru.geekbrains.librariescoursepractice.view.IScreens
 import ru.geekbrains.librariescoursepractice.view.IUserItemView
 import ru.geekbrains.librariescoursepractice.view.UsersView
+import javax.inject.Inject
 
-class UsersPresenter(
-    private val uiScheduler: Scheduler,
-    private val usersRepo: IGitHubUsersRepo,
-    private val router: Router,
-    private val screen: IScreens
-) :
-    MvpPresenter<UsersView>() {
+class UsersPresenter(private val uiScheduler: Scheduler) : MvpPresenter<UsersView>() {
+
+    @Inject
+    lateinit var usersRepo: IGitHubUsersRepo
+
+    @Inject
+    lateinit var router: Router
+
+    @Inject
+    lateinit var screen: IScreens
+
     class UsersListPresenter : IUserListPresenter {
 
         val users = (1..20).map { GithubUser("login $it") }.toMutableList()

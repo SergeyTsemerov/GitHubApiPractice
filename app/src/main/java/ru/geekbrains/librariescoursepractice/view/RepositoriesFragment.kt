@@ -8,13 +8,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import ru.geekbrains.librariescoursepractice.App
-import ru.geekbrains.librariescoursepractice.database.AndroidNetworkStatus
-import ru.geekbrains.librariescoursepractice.database.DataBase
-import ru.geekbrains.librariescoursepractice.database.RoomRepositoriesCache
 import ru.geekbrains.librariescoursepractice.databinding.FragmentRepositoriesBinding
-import ru.geekbrains.librariescoursepractice.model.ApiHolder
 import ru.geekbrains.librariescoursepractice.model.GithubUser
-import ru.geekbrains.librariescoursepractice.model.RetrofitGithubRepositoriesRepo
 import ru.geekbrains.librariescoursepractice.presenter.RepositoriesPresenter
 
 class RepositoriesFragment : MvpAppCompatFragment(), BackButtonListener, RepositoriesView {
@@ -23,16 +18,10 @@ class RepositoriesFragment : MvpAppCompatFragment(), BackButtonListener, Reposit
     private val binding get() = _binding!!
 
     private val presenter: RepositoriesPresenter by moxyPresenter {
-        RepositoriesPresenter(
-            (arguments?.getParcelable(REPOS)),
-            RetrofitGithubRepositoriesRepo(
-                ApiHolder.api,
-                AndroidNetworkStatus(requireContext()),
-                RoomRepositoriesCache(DataBase.getInstance())
-            ),
-            App.instance.router,
-            AndroidScreens()
-        )
+        val user = arguments?.getParcelable<GithubUser>(REPOS) as GithubUser
+        RepositoriesPresenter(user).apply {
+            App.instance.appComponent.inject(this)
+        }
     }
 
     private var adapter: RepositoriesRVAdapter? = null
@@ -53,13 +42,11 @@ class RepositoriesFragment : MvpAppCompatFragment(), BackButtonListener, Reposit
 
     companion object {
         private const val REPOS = "repos"
-        fun newInstance(user: GithubUser?): RepositoriesFragment {
-            val bundle = Bundle().apply { putParcelable(REPOS, user) }
-            return RepositoriesFragment().apply {
-                arguments = bundle
-            }
+        fun newInstance(user: GithubUser?) = RepositoriesFragment().apply {
+            arguments = Bundle().apply { putParcelable(REPOS, user) }
         }
     }
+
 
     override fun backPressed() = presenter.backPressed()
 

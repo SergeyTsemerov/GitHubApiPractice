@@ -1,26 +1,24 @@
 package ru.geekbrains.librariescoursepractice
 
 import android.app.Application
-import com.github.terrakok.cicerone.Cicerone
-import com.github.terrakok.cicerone.Router
-import ru.geekbrains.librariescoursepractice.database.DataBase
+import ru.geekbrains.librariescoursepractice.di.AppComponent
+import ru.geekbrains.librariescoursepractice.di.AppModule
+import ru.geekbrains.librariescoursepractice.di.DaggerAppComponent
 
 class App : Application() {
-
-    //Временно, до даггера
-    private val cicerone: Cicerone<Router> by lazy {
-        Cicerone.create()
-    }
-    val navigatorHolder get() = cicerone.getNavigatorHolder()
-    val router get() = cicerone.router
 
     companion object {
         lateinit var instance: App
     }
 
+    lateinit var appComponent: AppComponent
+
     override fun onCreate() {
         super.onCreate()
         instance = this
-        DataBase.create(this)
+
+        appComponent = DaggerAppComponent.builder()
+            .appModule(AppModule(this))
+            .build()
     }
 }

@@ -9,13 +9,19 @@ import ru.geekbrains.librariescoursepractice.model.IGitHubRepositoriesRepo
 import ru.geekbrains.librariescoursepractice.view.IRepoItemView
 import ru.geekbrains.librariescoursepractice.view.IScreens
 import ru.geekbrains.librariescoursepractice.view.RepositoriesView
+import javax.inject.Inject
 
-class RepositoriesPresenter(
-    private val user: GithubUser?,
-    private val repository: IGitHubRepositoriesRepo,
-    private val router: Router,
-    private val screen: IScreens
-) : MvpPresenter<RepositoriesView>() {
+class RepositoriesPresenter(private val user: GithubUser?) : MvpPresenter<RepositoriesView>() {
+
+    @Inject
+    lateinit var repository: IGitHubRepositoriesRepo
+
+    @Inject
+    lateinit var router: Router
+
+    @Inject
+    lateinit var screen: IScreens
+
     class RepositoriesListPresenter : IRepoListPresenter {
 
         val repositories = mutableListOf<GithubRepository>()

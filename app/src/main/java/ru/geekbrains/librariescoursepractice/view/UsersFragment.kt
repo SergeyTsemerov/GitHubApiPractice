@@ -11,12 +11,7 @@ import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import ru.geekbrains.librariescoursepractice.App
 import ru.geekbrains.librariescoursepractice.R
-import ru.geekbrains.librariescoursepractice.database.AndroidNetworkStatus
-import ru.geekbrains.librariescoursepractice.database.DataBase
-import ru.geekbrains.librariescoursepractice.database.RoomUserCache
 import ru.geekbrains.librariescoursepractice.databinding.FragmentUsersBinding
-import ru.geekbrains.librariescoursepractice.model.ApiHolder
-import ru.geekbrains.librariescoursepractice.model.RetrofitGithubUsersRepo
 import ru.geekbrains.librariescoursepractice.presenter.UsersPresenter
 
 class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
@@ -29,18 +24,11 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     private val binding get() = _binding!!
 
     private val presenter: UsersPresenter by moxyPresenter {
-        UsersPresenter(
-            AndroidSchedulers.mainThread(),
-            RetrofitGithubUsersRepo(
-                ApiHolder.api,
-                AndroidNetworkStatus(requireContext()),
-                RoomUserCache(DataBase.getInstance())
-            ),
-            App.instance.router,
-            AndroidScreens()
-        )
+        UsersPresenter(AndroidSchedulers.mainThread()).apply {
+            App.instance.appComponent.inject(this)
+        }
     }
-    var adapter: UsersRVAdapter? = null
+    private var adapter: UsersRVAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
