@@ -5,8 +5,6 @@ import ru.geekbrains.librariescoursepractice.presenter.MainPresenter
 import ru.geekbrains.librariescoursepractice.presenter.RepositoriesPresenter
 import ru.geekbrains.librariescoursepractice.presenter.UsersPresenter
 import ru.geekbrains.librariescoursepractice.view.MainActivity
-import ru.geekbrains.librariescoursepractice.view.RepositoriesFragment
-import ru.geekbrains.librariescoursepractice.view.UsersFragment
 import javax.inject.Singleton
 
 @Singleton
@@ -14,15 +12,13 @@ import javax.inject.Singleton
     modules = [
         AppModule::class,
         CiceroneModule::class,
-        CacheModule::class,
-        ApiModule::class,
-        RepoModule::class
+        DatabaseModule::class,
+        ApiModule::class
     ]
 )
 interface AppComponent {
 
+    fun usersSubcomponent(): UsersSubcomponent
     fun inject(mainActivity: MainActivity)
     fun inject(mainPresenter: MainPresenter)
-    fun inject(usersPresenter: UsersPresenter)
-    fun inject(repositoriesPresenter: RepositoriesPresenter)
 }

@@ -3,6 +3,7 @@ package ru.geekbrains.librariescoursepractice.presenter
 import com.github.terrakok.cicerone.Router
 import io.reactivex.rxjava3.core.Scheduler
 import moxy.MvpPresenter
+import ru.geekbrains.librariescoursepractice.di.IUsersScopeContainer
 import ru.geekbrains.librariescoursepractice.model.GithubUser
 import ru.geekbrains.librariescoursepractice.model.IGitHubUsersRepo
 import ru.geekbrains.librariescoursepractice.view.IScreens
@@ -20,6 +21,9 @@ class UsersPresenter(private val uiScheduler: Scheduler) : MvpPresenter<UsersVie
 
     @Inject
     lateinit var screen: IScreens
+
+    @Inject
+    lateinit var usersScopeContainer: IUsersScopeContainer
 
     class UsersListPresenter : IUserListPresenter {
 
@@ -62,5 +66,10 @@ class UsersPresenter(private val uiScheduler: Scheduler) : MvpPresenter<UsersVie
     fun backPressed(): Boolean {
         router.exit()
         return true
+    }
+
+    override fun onDestroy() {
+        usersScopeContainer.releaseUsersScope()
+        super.onDestroy()
     }
 }

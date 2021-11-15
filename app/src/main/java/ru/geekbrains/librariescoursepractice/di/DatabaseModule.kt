@@ -8,19 +8,11 @@ import ru.geekbrains.librariescoursepractice.database.*
 import javax.inject.Singleton
 
 @Module
-class CacheModule {
+class DatabaseModule {
 
     @Singleton
     @Provides
     fun database(app: App): DataBase =
         Room.databaseBuilder(app, DataBase::class.java, DataBase.DB_NAME)
             .build()
-
-    @Singleton
-    @Provides
-    fun usersCache(database: DataBase): IUserCache = RoomUserCache(database)
-
-    @Singleton
-    @Provides
-    fun reposCache(database: DataBase): IRepositoriesCache = RoomRepositoriesCache(database)
 }

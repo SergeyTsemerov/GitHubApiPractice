@@ -1,17 +1,22 @@
 package ru.geekbrains.librariescoursepractice
 
 import android.app.Application
-import ru.geekbrains.librariescoursepractice.di.AppComponent
-import ru.geekbrains.librariescoursepractice.di.AppModule
-import ru.geekbrains.librariescoursepractice.di.DaggerAppComponent
+import ru.geekbrains.librariescoursepractice.di.*
 
-class App : Application() {
+class App : Application(), IUsersScopeContainer, IRepositoryScopeContainer {
 
     companion object {
         lateinit var instance: App
     }
 
     lateinit var appComponent: AppComponent
+        private set
+
+    var usersSubcomponent: UsersSubcomponent? = null
+        private set
+
+    var repositorySubcomponent: RepositorySubcomponent? = null
+        private set
 
     override fun onCreate() {
         super.onCreate()
@@ -20,5 +25,21 @@ class App : Application() {
         appComponent = DaggerAppComponent.builder()
             .appModule(AppModule(this))
             .build()
+    }
+
+    fun initUsersSubcomponent() = appComponent.usersSubcomponent().also {
+        usersSubcomponent = it
+    }
+
+    fun initRepositorySubcomponent() = usersSubcomponent?.repositorySubcomponent().also {
+        repositorySubcomponent = it
+    }
+
+    override fun releaseUsersScope() {
+        usersSubcomponent = null
+    }
+
+    override fun releaseRepositoryScope() {
+        repositorySubcomponent = null
     }
 }

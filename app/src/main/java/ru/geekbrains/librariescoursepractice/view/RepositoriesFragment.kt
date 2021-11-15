@@ -9,6 +9,7 @@ import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import ru.geekbrains.librariescoursepractice.App
 import ru.geekbrains.librariescoursepractice.databinding.FragmentRepositoriesBinding
+import ru.geekbrains.librariescoursepractice.di.RepositorySubcomponent
 import ru.geekbrains.librariescoursepractice.model.GithubUser
 import ru.geekbrains.librariescoursepractice.presenter.RepositoriesPresenter
 
@@ -17,10 +18,13 @@ class RepositoriesFragment : MvpAppCompatFragment(), BackButtonListener, Reposit
     private var _binding: FragmentRepositoriesBinding? = null
     private val binding get() = _binding!!
 
+    var repositorySubcomponent: RepositorySubcomponent? = null
+
     private val presenter: RepositoriesPresenter by moxyPresenter {
         val user = arguments?.getParcelable<GithubUser>(REPOS) as GithubUser
         RepositoriesPresenter(user).apply {
-            App.instance.appComponent.inject(this)
+            repositorySubcomponent = App.instance.initRepositorySubcomponent()
+            repositorySubcomponent?.inject(this)
         }
     }
 
