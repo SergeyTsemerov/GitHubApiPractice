@@ -3,6 +3,8 @@ package ru.geekbrains.librariescoursepractice.presenter
 import com.github.terrakok.cicerone.Router
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import moxy.MvpPresenter
+import ru.geekbrains.librariescoursepractice.di.IRepositoryScopeContainer
+import ru.geekbrains.librariescoursepractice.di.RepositorySubcomponent
 import ru.geekbrains.librariescoursepractice.model.GithubRepository
 import ru.geekbrains.librariescoursepractice.model.GithubUser
 import ru.geekbrains.librariescoursepractice.model.IGitHubRepositoriesRepo
@@ -21,6 +23,9 @@ class RepositoriesPresenter(private val user: GithubUser?) : MvpPresenter<Reposi
 
     @Inject
     lateinit var screen: IScreens
+
+    @Inject
+    lateinit var repositoryScopeContainer: IRepositoryScopeContainer
 
     class RepositoriesListPresenter : IRepoListPresenter {
 
@@ -57,5 +62,10 @@ class RepositoriesPresenter(private val user: GithubUser?) : MvpPresenter<Reposi
     fun backPressed(): Boolean {
         router.navigateTo(screen.users())
         return true
+    }
+
+    override fun onDestroy() {
+        repositoryScopeContainer.releaseRepositoryScope()
+        super.onDestroy()
     }
 }

@@ -12,6 +12,7 @@ import moxy.ktx.moxyPresenter
 import ru.geekbrains.librariescoursepractice.App
 import ru.geekbrains.librariescoursepractice.R
 import ru.geekbrains.librariescoursepractice.databinding.FragmentUsersBinding
+import ru.geekbrains.librariescoursepractice.di.UsersSubcomponent
 import ru.geekbrains.librariescoursepractice.presenter.UsersPresenter
 
 class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
@@ -20,12 +21,15 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
         fun newInstance() = UsersFragment()
     }
 
+    var usersSubcomponent: UsersSubcomponent? = null
+
     private var _binding: FragmentUsersBinding? = null
     private val binding get() = _binding!!
 
     private val presenter: UsersPresenter by moxyPresenter {
         UsersPresenter(AndroidSchedulers.mainThread()).apply {
-            App.instance.appComponent.inject(this)
+            usersSubcomponent = App.instance.initUsersSubcomponent()
+            usersSubcomponent?.inject(this)
         }
     }
     private var adapter: UsersRVAdapter? = null
