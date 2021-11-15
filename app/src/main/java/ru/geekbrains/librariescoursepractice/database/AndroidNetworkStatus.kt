@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkRequest
+import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 
 class AndroidNetworkStatus(context: Context) : INetworkStatus {
@@ -29,5 +30,5 @@ class AndroidNetworkStatus(context: Context) : INetworkStatus {
     }
 
     override fun isOnline() = statusSubject
-    override fun isOnlineSingle() = statusSubject.first(false)
+    override fun isOnlineSingle(): Single<Boolean> = statusSubject.first(false)
 }
